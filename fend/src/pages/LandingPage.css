@@ -1,0 +1,176 @@
+/* HEADER */
+
+
+.site-header {
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo {
+  font-weight: bold;
+  color: #0077b6;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-weight: 500;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #0077b6;
+}
+
+/* HERO SECTION */
+.hero-section {
+  background: linear-gradient(to right, #00b4d8, #0077b6);
+  min-height: 350px;
+  padding: 80px 0;
+  text-align: center;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+.hero-buttons .btn {
+  border-radius: 30px;
+  font-size: 1.1rem;
+}
+
+/* FEATURE SECTION */
+.feature-box {
+  background: #fff;
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* LOGO */
+.site-logo {
+  height: 40px;
+  width: auto;
+  border-radius: 5px;
+}
+
+.logo-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #0077b6;
+}
+
+ .about-section{
+  background: linear-gradient(to right, #02738a, #38b7fc);
+  color: white;
+
+ }
+/* ===================== */
+/* RESPONSIVE DESIGN */
+/* ===================== */
+
+/* For tablets (max-width 991px) */
+@media (max-width: 991px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .site-logo {
+    height: 35px;
+  }
+
+  .nav-list {
+    gap: 0.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* For mobile (max-width 768px) */
+@media (max-width: 768px) {
+  .site-header .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-list {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .hero-section {
+    padding: 60px 15px;
+    min-height: 300px;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+}
+
+/* For very small screens (max-width 480px) */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .hero-buttons .btn {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+
+  .feature-box {
+    padding: 15px;
+  }
+
+  .logo-text {
+    font-size: 1rem;
+  }
+
+  .site-logo {
+    height: 30px;
+  }
+}

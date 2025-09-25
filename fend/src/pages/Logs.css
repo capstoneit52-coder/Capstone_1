@@ -1,0 +1,200 @@
+
+.login-container {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100vh; /* Full height */
+  width: 100vw;  /* Full width */
+  font-family: "Poppins", sans-serif;
+}
+
+.login-left {
+  flex: 1;
+  background: linear-gradient(to right, #00b4d8, #0077b6);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.logo-circle {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.logo-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.login-left h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.login-left p {
+  max-width: 300px;
+  opacity: 0.9;
+}
+
+.login-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 4rem;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.login-form {
+  width: 100%;
+  max-width: 350px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-group input {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.forgot-link {
+  color: #0077b6;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #0077b6;
+  color: white;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #0077b6;
+  color: #0077b6;
+}
+
+.login-message {
+  text-align: center;
+  margin-top: 10px;
+  color: #0077b6;
+}
+
+.social-login {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.social-icons a {
+  margin: 0 5px;
+  font-size: 1.2rem;
+  color: #0077b6;
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 1024px) {
+  .login-left {
+    padding: 3rem;
+  }
+  .login-left h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column; /* ✅ Stack vertically */
+    height: auto; /* Allow natural height */
+  }
+
+  .login-left {
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .login-left p {
+    max-width: 90%;
+  }
+
+  .login-right {
+    box-shadow: none;
+    padding: 2rem;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-left h1 {
+    font-size: 1.8rem;
+  }
+
+  .login-form {
+    max-width: 100%;
+  }
+
+  .form-group input {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary, .btn-secondary {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+} 
+/* logooo */
+
+/* Login Page Logo */
+.login-left .site-logo {
+  height: 120px;   /* ✅ Make it bigger */
+  width: auto;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;  /* ✅ Center horizontally */
+}
+.login-left .logo-text {
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #0077b6;
+}
+
+

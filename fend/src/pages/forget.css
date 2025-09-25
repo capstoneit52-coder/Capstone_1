@@ -1,0 +1,26 @@
+/* Full-page container */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full screen height */
+  background: #f8f9fa; /* Light gray background (PC-friendly) */
+  padding: 1rem;
+}
+
+/* Centered card wrapper */
+.auth-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Card styling */
+.auth-center .card {
+  width: 100%;
+  max-width: 450px; /* PC-friendly width */
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
+}
