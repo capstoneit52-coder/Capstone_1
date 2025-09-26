@@ -253,6 +253,47 @@ export default function AdminMonthlyReport() {
     },
   }), [totalVisitType]);
 
+  // ------ Summaries for insights ------
+  // Daily peaks (byDay)
+  const daySummary = useMemo(() => {
+    if (!byDay.length) return null;
+    const total = byDay.reduce((sum, dayRow) => sum + dayRow.count, 0);
+    const peak = byDay.reduce((a, b) => (a.count > b.count ? a : b));
+    const low = byDay.reduce((a, b) => (a.count < b.count ? a : b));
+    const avgPerDay = total / byDay.length;
+    return { peak, low, total, avgPerDay };
+  }, [byDay]);
+
+  // Hourly peaks (byHour)
+  const hourSummary = useMemo(() => {
+    if (!byHour.length) return null;
+    const peak = byHour.reduce((a, b) => (a.count > b.count ? a : b));
+    const avgPerHour = byHour.reduce((sum, h) => sum + h.count, 0) / byHour.length;
+    return { peakHour: Number(peak.label), peakCount: peak.count, avgPerHour };
+  }, [byHour]);
+
+  // Visit type split (visitType)
+  const visitTypeSummary = useMemo(() => {
+    if (!visitType.length) return null;
+    const total = visitType.reduce((sum, v) => sum + v.count, 0);
+    const pct = (n) => (total ? (n / total) * 100 : 0);
+    const byName = Object.fromEntries(visitType.map((v) => [v.label, v.count]));
+    return {
+      total,
+      walkinPct: pct(byName.walkin || 0),
+      appointmentPct: pct(byName.appointment || 0),
+    };
+  }, [visitType]);
+
+  // Top service (byService)
+  const serviceSummary = useMemo(() => {
+    if (!byService.length) return null;
+    const total = byService.reduce((sum, srow) => sum + srow.count, 0);
+    const top = byService.reduce((a, b) => (a.count > b.count ? a : b));
+    const topShare = total ? (top.count / total) * 100 : 0;
+    return { topService: top.label, topCount: top.count, topShare, total };
+  }, [byService]);
+
   const downloadPdf = async () => {
     try {
       const { default: jsPDF } = await import("jspdf");
@@ -278,6 +319,24 @@ export default function AdminMonthlyReport() {
         headStyles: { fillColor: [13, 110, 253] },
       });
 
+      // Insight for Daily Counts
+      if (daySummary) {
+        autoTable(doc, {
+          startY: (doc.lastAutoTable?.finalY || 100) + 8,
+          head: [["Insight"]],
+          body: [[
+            `Peak day: ${daySummary.peak.day} (${daySummary.peak.count} visits). ` +
+            `Lowest day: ${daySummary.low.day} (${daySummary.low.count}). ` +
+            `Avg/day: ${daySummary.avgPerDay.toFixed(1)}.`,
+          ]],
+          theme: "plain",
+          styles: { fontSize: 8, textColor: 100, cellPadding: 2 },
+          headStyles: { fontStyle: "bold", textColor: 120 },
+          columnStyles: { 0: { cellWidth: 515 } },
+          margin: { left: 40, right: 40 },
+        });
+      }
+
       autoTable(doc, {
         startY: (doc.lastAutoTable?.finalY || 100) + 20,
         head: [["Hour", "Total (month)", "Avg/day"]],
@@ -291,6 +350,24 @@ export default function AdminMonthlyReport() {
         headStyles: { fillColor: [25, 135, 84] },
       });
 
+      // Insight for By Hour
+      if (hourSummary) {
+        autoTable(doc, {
+          startY: (doc.lastAutoTable?.finalY || 100) + 8,
+          head: [["Insight"]],
+          body: [[
+            `Peak hour: ${hourSummary.peakHour}:00 (${hourSummary.peakCount} visits). ` +
+            `Avg/hour: ${hourSummary.avgPerHour.toFixed(1)}. ` +
+            `Tip: Staff up around peak hour.`,
+          ]],
+          theme: "plain",
+          styles: { fontSize: 8, textColor: 100, cellPadding: 2 },
+          headStyles: { fontStyle: "bold", textColor: 120 },
+          columnStyles: { 0: { cellWidth: 515 } },
+          margin: { left: 40, right: 40 },
+        });
+      }
+
       autoTable(doc, {
         startY: (doc.lastAutoTable?.finalY || 100) + 20,
         head: [["Visit Type", "Count"]],
@@ -300,6 +377,24 @@ export default function AdminMonthlyReport() {
         headStyles: { fillColor: [108, 117, 125] },
       });
 
+      // Insight for Visit Type
+      if (visitTypeSummary) {
+        autoTable(doc, {
+          startY: (doc.lastAutoTable?.finalY || 100) + 8,
+          head: [["Insight"]],
+          body: [[
+            `Appointments: ${visitTypeSummary.appointmentPct.toFixed(0)}% · ` +
+            `Walk-ins: ${visitTypeSummary.walkinPct.toFixed(0)}%. ` +
+            `Tip: If walk-ins surge, consider more front-desk coverage.`,
+          ]],
+          theme: "plain",
+          styles: { fontSize: 8, textColor: 100, cellPadding: 2 },
+          headStyles: { fontStyle: "bold", textColor: 120 },
+          columnStyles: { 0: { cellWidth: 515 } },
+          margin: { left: 40, right: 40 },
+        });
+      }
+
       autoTable(doc, {
         startY: (doc.lastAutoTable?.finalY || 100) + 20,
         head: [["Service", "Count"]],
@@ -308,6 +403,24 @@ export default function AdminMonthlyReport() {
         styles: { fontSize: 9 },
         headStyles: { fillColor: [220, 53, 69] },
       });
+
+      // Insight for By Service
+      if (serviceSummary) {
+        autoTable(doc, {
+          startY: (doc.lastAutoTable?.finalY || 100) + 8,
+          head: [["Insight"]],
+          body: [[
+            `Top service: ${serviceSummary.topService} (${serviceSummary.topCount} visits, ` +
+            `${serviceSummary.topShare.toFixed(0)}% of monthly volume). ` +
+            `Tip: Ensure supplies/staffing align with demand.`,
+          ]],
+          theme: "plain",
+          styles: { fontSize: 8, textColor: 100, cellPadding: 2 },
+          headStyles: { fontStyle: "bold", textColor: 120 },
+          columnStyles: { 0: { cellWidth: 515 } },
+          margin: { left: 40, right: 40 },
+        });
+      }
 
       doc.save(`visits-report-${month}.pdf`);
     } catch (e) {
@@ -365,6 +478,11 @@ export default function AdminMonthlyReport() {
                 <div className="card-header">Daily Counts</div>
                 <div className="card-body">
                   <Line data={lineData} options={lineOptions} />
+                  {daySummary && (
+                    <small className="text-muted d-block mt-2">
+                      Peak day: {daySummary.peak.day} ({daySummary.peak.count} visits). Lowest day: {daySummary.low.day} ({daySummary.low.count}). Avg/day: {daySummary.avgPerDay.toFixed(1)}.
+                    </small>
+                  )}
                 </div>
               </div>
             </div>
@@ -373,6 +491,11 @@ export default function AdminMonthlyReport() {
                 <div className="card-header">By Hour</div>
                 <div className="card-body">
                   <Bar data={hourBarData} options={hourBarOptions} />
+                  {hourSummary && (
+                    <small className="text-muted d-block mt-2">
+                      Peak hour: {hourSummary.peakHour}:00 ({hourSummary.peakCount} visits). Avg/hour: {hourSummary.avgPerHour.toFixed(1)}. Tip: Staff up around peak hour.
+                    </small>
+                  )}
                 </div>
               </div>
             </div>
@@ -427,6 +550,11 @@ export default function AdminMonthlyReport() {
           );
         })}
       </div>
+      {visitTypeSummary && (
+        <small className="text-muted d-block mt-2 text-center">
+          Appointments: {visitTypeSummary.appointmentPct.toFixed(0)}% · Walk-ins: {visitTypeSummary.walkinPct.toFixed(0)}%. Tip: If walk-ins surge, consider more front-desk coverage.
+        </small>
+      )}
     </div>
   </div>
 </div>
@@ -438,6 +566,11 @@ export default function AdminMonthlyReport() {
                 <div className="card-header">By Service</div>
                 <div className="card-body">
                   <Bar data={serviceBarData} options={serviceBarOptions} />
+                  {serviceSummary && (
+                    <small className="text-muted d-block mt-2">
+                      Top service: {serviceSummary.topService} ({serviceSummary.topCount} visits, {serviceSummary.topShare.toFixed(0)}% of monthly volume). Tip: Ensure supplies/staffing align with demand.
+                    </small>
+                  )}
                 </div>
               </div>
             </div>
